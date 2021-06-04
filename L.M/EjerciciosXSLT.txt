@@ -1,0 +1,79 @@
+			PRACTICA LLMM03P02 – XSLT
+           	******************************************
+
+
+Tomando como base el archivo factbook.xml de BaseX, generar lo que se pide a 
+continuación utilizando Transformaciones XSL.
+
+1.-Generar un html con las nombres de los países. (30% nota)
+
+
+
+XSL:
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+  <xsl:template match="//country">
+  <xsl:value-of select="name"/>
+  </xsl:template>
+</xsl:stylesheet>
+
+
+2.-Generar un html con una tabla con una columna que contenga el nombre del país y 
+otra que contenga la población total del país (30% nota)
+
+
+
+XSL:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+<xsl:template match="/">
+<html>
+<head><h1>Tabla de  Paises: </h1></head>
+<body>
+<xsl:apply-templates/>
+</body>
+</html>
+</xsl:template>
+
+  <xsl:template match="//country">
+<table border="1">
+<tr>
+<td><xsl:value-of select="name"/></td><td><xsl:value-of select="@population"/></td>
+</tr>
+ </table>
+  </xsl:template>
+</xsl:stylesheet>
+
+
+
+3.-Generar un html con una lista con todas las ciudades incluidas en el archivo xml 
+agrupadas por país (30% nota)
+
+xsl: 
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:template match="country">
+  <html>
+  <head><h1>Ciudades del Pais</h1></head>
+  <body>
+  <xsl:apply-templates/>
+  </body>
+  </html>
+  </xsl:template>
+  
+  <xsl:template match="city">
+<p><xsl:value-of select="name"/></p>
+
+</xsl:template>
+  
+</xsl:stylesheet>
+
+
+
+4.-Generar un html con la lista de todos los países en los que la religión protestante 
+está presente. (10% nota 

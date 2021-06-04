@@ -1,0 +1,127 @@
+-Genera las expresiones XPath necesarias para obtener la siguiente información:
+
+1. Nombre de los continentes
+
+con ruta Absoluta: /mondial/continent/@name
+con la relativa: //continent/@name
+
+2. Nombre del río que ocupa la décima posición
+
+//river[position()=10]
+//river[10]/@name
+
+3. Nombre de la isla cuya superficie es 13935
+
+//island[@area='13935']
+
+4. Nombre de los países que no tienen frontera con otros países
+
+/mondial/country[count(border)=0]/name
+
+5. Nombre de organizaciones que tengan más de 5 miembros
+
+/mondial/organization[count(members)>5]
+
+6. “Hermanos menores” de la provincia de nombre Madrid, descendiente del país Spain
+
+//country[name="Spain"]/province[@name="Madrid"]
+
+7. Nombre y gobierno de los países cuya población sea menor que 1.000.000
+
+//country[@population<1000000 and @government]
+
+8. Nombre de los países que tengan una ciudad llamada Cordoba
+
+//city[name="Cordoba"]/name
+
+9. Nombre de los lagos ubicados en Russia
+
+//lake/located[@country="f0_358"]/../@name
+
+10. Nombres de los países cuyo territorio está en Europa
+
+ //country/encompassed[@continent="f0_119"]/../@name
+
+
+*******************************************************************************
+
+
+
+4-Justifica la salida de las siguientes expresiones, interpretando el resultado de cada línea de la 
+expresión:
+
+
+
+1Ejer.
+
+<credos>
+{
+(:con el for selecciono el elemento que deseo seleccionar en este caso relegion de USA:)
+For $religionesUSA 
+(:en esta linea LE indico la ruta de lo que deseo seleccionar. todas la relegiones que hay registradas en elemento estados unidos:) 
+in doc(‘factbook’)/mundial/country[@name=”United States”]/religions
+
+Let $porcentajes:= $religionesUSA/@percentage
+(: let lo que me  permite hacer es declarar la variable procentaje de la relegion en USA con valor:)
+
+Order by $religionesUSA descending
+(: ordenar las relegiones USA de forma descendiente:)
+
+Return <religión porcentaje=”{$porcentajes}”>
+{$religionesUSA/text()}
+</religión>
+(: devuelve el prosentaje de la relegion en USA  y CON EL NOMBRE D ELA RELIGION Y lo muestra en farmato texto:)
+}
+</credos>
+
+
+2Ejer.
+
+(: CON ESTE FOR SELECIONO EL ELEMENTO ISLA:)
+For $islar 
+
+(:LE INDICO LA RUTA DONDE ESTA LOCALIZADA LA ISLA INDICANDO EL ATRIBUTO NOMBRE DEL PAIS DONDE SE ENCUENTRA Y A LA VEZ CON LA RUTA DEL ATRIBUTO ID  DEL PAIS :)
+
+in doc(‘factbook’)/mundial/island[located/@country=/mundial/country[@name=”Spain”]/@id]
+
+(: ACONTINUACION ORDENAMOS  LAS ISLAS CON SON NOMBRE :)
+Order by $islas/@name
+
+(:DEVUELVE LOS NOMBRES DE LAS ISLAS:)
+return $islas/@name/data(
+
+
+**********************************************************************************
+
+
+5-Genera expresiones XQuery para obtener la siguiente información
+1. Un XML en el que aparezcan los nombres de los países que tengan una población 
+mayor que España, ordenados por el nombre del país.
+
+for $country in 
+doc('factbook.xml')/mondial/country[@population > 39181112 ]
+let $c:= $country/@name/data()
+order by $c
+return<country>{$c}</country>
+
+
+2. Un XML en el que aparezcan las montañas de más de 4000 metros de altura, 
+incluyendo la altura de estas como un atributo.
+
+
+for $mountain in 
+doc('factbook.xml')/mondial/mountain[@height > 4000 ]
+let $b:=$mountain/@name/data()
+let $c:=$mountain/@height/data()
+order by $c
+return<mountain>{$b}: {$c}</mountain>
+
+
+
+3. Un XML con todos los datos disponibles de ciudades europeas
+
+
+for $encompassed in 
+doc('factbook.xml')/mondial/country/encompassed[@continent="f0_119" ]/..
+
+return<country>{$encompassed}</country>
